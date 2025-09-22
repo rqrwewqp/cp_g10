@@ -15,6 +15,23 @@
 <p style="padding-left: 60px;">w9 期中自評、w18 期末自評</p><h1>w3</h1>
 <p>先處理<span style="background-color: #ccffcc;">奇數正方形網格區域</span>，讓機器人走過每一格: <a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/295cc3af8240aa9b88f9c3a36b676f71135023fa/for_odd_square_grid_area.py">執行結果</a>。</p>
 <p>針對<span style="background-color: #ccffcc;">長方形網格區域</span>，讓機器人也能走過每一格: <a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/7b7f1b32fddf0885a1a238f9c529d8b6c043d80e/for_any_rectangle_grid_area.py">執行結果</a>。</p>
+<p style="padding-left: 30px;">n = 10  # 列數 = x 軸方向長度<br/>m = 11  # 行數 = y 軸方向長度<br/>w = robot.World(n, m)<br/>r = robot.AnimatedRobot(w, 1, 1)  # 機器人從左下角 (1,1) 開始</p>
+<p style="padding-left: 30px;">起始位置在左下角 (1,1)，初始方向預設是「向右」。<br/>移動策略與解法原理<br/>目標：蛇形遍歷整個格子（zig-zag）<br/><br/>從左下角出發，沿 x 軸（列）往右走一行 → 到右邊後轉向往上 → 然後往左走一行 → 到左邊再往上…<br/>最終會掃過整個網格。<br/><br/>也就是這樣的移動路徑（以 4 行 5 列為例）：</p>
+<p style="padding-left: 30px;">↑ y<br/>4 ← ← ← ← ←<br/>3 → → → → →<br/>2 ← ← ← ← ←<br/>1 → → → → →<br/>   1 2 3 4 5 → x</p>
+<p style="padding-left: 30px;">定義右轉:</p>
+<p style="padding-left: 30px;">def turn_right():<br/>    for i in range(3):<br/>        r.turn_left()</p>
+<p style="padding-left: 30px;">右轉是用三次左轉模擬出來的。</p>
+<p style="padding-left: 30px;">主循環：按「行」遍歷</p>
+<p style="padding-left: 30px;">for row in range(m):  # row = 0 到 m-1，總共 m 行（從第 1 行起）</p>
+<p style="padding-left: 30px;">奇偶行控制方向：<br/><br/>若 row % 2 == 0（偶數行，第 1, 3, 5…行）→ 向右（→）<br/><br/>若 row % 2 == 1（奇數行，第 2, 4, 6…行）→ 向左（←）<br/><br/>注意：這裡的 row 是從 0 起算的，所以：<br/><br/>row=0 對應實際第 1 行（y=1）<br/><br/>row=1 對應第 2 行（y=2）<br/><br/>依此類推</p>
+<p style="padding-left: 30px;">每行內移動：n-1 步</p>
+<p style="padding-left: 30px;">for col in range(n-1):<br/>    r.move(1)</p>
+<p style="padding-left: 30px;">無論向左還是向右，機器人都在一行內走 n-1 步，剛好走完一整行。</p>
+<p style="padding-left: 30px;">如果不是最後一行，就準備「上移到下一行」<br/>偶數行結束後（向右走完）</p>
+<p style="padding-left: 30px;">if row &lt; m-1:<br/>    r.turn_left()  # 向上（因為原本面向右）<br/>    r.move(1)      # 往上走一格<br/>    r.turn_left()  # 面向左，準備下一行</p>
+<p style="padding-left: 30px;">奇數行結束後（向左走完）</p>
+<p style="padding-left: 30px;">if row &lt; m-1:<br/>    turn_right()   # 向上（原本面向左）<br/>    r.move(1)      # 往上走一格<br/>    turn_right()   # 面向右，準備下一行</p>
+<hr/>
 <p>w3: 什麼是 git, GitHub, gist 與 cmsimde? 如何使用這些工具？為什麼要使用這些工具？</p>
 <hr/>
 <p>原始提問:<br/><br/>下個禮拜我們這一組有六位組員，被要求要上台報告有關計算機程式課程的學習心得，題目是:w3: 什麼是 git，GitHub，gist 與 cmsimde? 如何使用這些工具？為什麼要使用這些工具？, 上課時老師只稍微說明一下，但要我們自己找資料聯席，並且六人逐一上台報告心得， 請用大一新生的程度，幫我們這六位組員準備講稿,並且準備六個人分別要上台展示的指令及內容, 講稿請詳細解說, 並列出參考網站來源, 非常感謝。<br/><br/>要求修飾提問稿:<br/><br/>請幫我們將以下的文字稍微整理一下, 讓他比較通順易懂: 下個禮拜我們這一組有六位組員，被要求要上台報告有關計算機程式課程的學習心得，題目是:w3: 什麼是 git，GitHub，gist 與 cmsimde? 如何使用這些工具？為什麼要使用這些工具？, 上課時老師只稍微說明一下，但要我們自己找資料聯席，並且六人逐一上台報告心得， 請用大一新生的程度，幫我們這六位組員準備講稿,並且準備六個人分別要上台展示的指令及內容, 講稿請詳細解說, 並列出參考網站來源, 非常感謝。<br/><br/>結果:<br/><br/>下個禮拜我們組有六位組員，會上台報告計算機程式課程的學習心得。報告的題目是：「W3: 什麼是 Git、GitHub、Gist 和 CMSIMDE？如何使用這些工具？為什麼要使用這些工具？」老師在課堂上簡單提過這些工具，但並沒有深入講解，並且要求我們自己搜尋資料，準備報告內容。我們的報告會分成六部分，每位組員負責介紹一個主題，逐一上台展示。<br/><br/>因此，請幫我們為六位組員準備講稿，內容要符合大一新生的理解程度，並且每個人要有具體的指令展示與解說。希望講稿能詳細說明這些工具的基本概念、操作方法及為什麼我們需要使用它們，並附上參考網站來源。<br/><br/>感謝你的幫忙！</p>
