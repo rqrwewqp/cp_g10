@@ -1,5 +1,4 @@
 <h1>About</h1>
-<p><a href="https://mde.tw/w1/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/d6d229925f852c97fc71abe1fa0620c4/raw/b515b4f8c65b671b6e5cd4edec5c9f0a80406938/w1_1.py">走15步</a></p>
 <p>課程名稱: 計算機程式</p>
 <p>課程評分:</p>
 <p style="padding-left: 30px;"><span style="background-color: #ffff00;">學習心得報告 (60%)</span> - MS Teams 線上參與，<span style="background-color: #ccffcc;">6人一組</span>每三週發表學習心得。</p>
@@ -12,7 +11,48 @@
 <p style="padding-left: 60px;">w17 (<span style="background-color: #ccffcc;">1b 採 Youtube 影片簡報</span>): 計算機程式課程學到了什麼？</p>
 <p style="padding-left: 60px;">w18: 課程總結</p>
 <p style="padding-left: 30px;"><span style="background-color: #ffff00;">個人與分組網站維護 (40%)</span> - 每週至少兩次推送與課程進度相關的學習內容與心得。</p>
-<p style="padding-left: 60px;">w9 期中自評、w18 期末自評</p><h1>w3</h1>
+<p style="padding-left: 60px;">w9 期中自評、w18 期末自評</p>
+<h1>Python</h1>
+<p><a href="https://github.com/mdecycu/python_2025/blob/main/%E7%AC%AC01%E8%AA%B2%EF%BC%9A%E5%88%9D%E8%AD%98Python.md">Python 程式教材</a> (中文)</p>
+<p>透過 <a href="https://mde.tw/cp2025/content/Robot_ex.html">https://mde.tw/cp2025/content/Robot_ex.html</a> 學習 Python 程式語法。</p>
+<p>Python 基本語法: <a href="https://link.springer.com/chapter/10.1007/978-3-031-90522-3_1">Python essential</a> (英文，只能在校網擷取)</p>
+<p>Python 變數宣告原則:</p>
+<p>在 Python 中，變數宣告（Variable Declaration）相較於其他語言（如 Java 或 C++）來得簡單，因為 Python 是動態型別語言。以下是 Python 宣告變數的原則與最佳實踐：</p>
+<p><span style="background-color: #ffff99;">一、不需明確指定型別</span></p>
+<p style="padding-left: 30px;"><span style="background-color: #ccffcc;">Python 是動態型別語言，你不需要指定變數型別</span>，解譯器會根據賦值自動判斷。</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">x = 10        # 整數
+name = "Amy"  # 字串
+pi = 3.14     # 浮點數
+</pre>
+<p><span style="background-color: #ffff99;">二、變數名稱命名規則</span></p>
+<p style="padding-left: 30px;">合法命名：<br/><br/><span style="background-color: #ccffcc;">可以包含字母、數字、底線（_）</span><br/><br/><span style="background-color: #ccffcc;">不能以數字開頭</span><br/><br/><span style="background-color: #ccffcc;">不能使用 Python 保留的關鍵字(35個)</span>:</p>
+<p style="padding-left: 60px;">['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', '<span style="background-color: #ffcc99;">def</span>', 'del', 'elif', '<span style="background-color: #ffcc99;">else</span>', 'except', 'finally', '<span style="background-color: #ffcc99;">for</span>', 'from', 'global', '<span style="background-color: #ffcc99;">if</span>', '<span style="background-color: #ffcc99;">import</span>', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']</p>
+<p style="padding-left: 30px;">利用 keyword 模組，<a href="https://mde.tw/cp_demo/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/da44925c2f9694f825c2525edfc80367f327ca5e/print_keywords.py">列出 Python 所保留的關鍵字</a>:</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import keyword
+
+# 印出關鍵字清單
+print("Python 保留關鍵字有：")
+print(keyword.kwlist)
+
+# 印出總數
+print("\n關鍵字總數：", len(keyword.kwlist))</pre>
+<p><span style="background-color: #ffff99;">三、使用有意義的變數名稱</span></p>
+<p style="padding-left: 30px;">例如: grid_width = 10</p>
+<p><span style="background-color: #ffff99;">四、遵守 Python 命名慣例（<a href="https://peps.python.org/pep-0008/" style="background-color: #ffff99;">PEP 8</a>）</span></p>
+<p style="padding-left: 30px;"><span style="background-color: #ccffcc;">小寫 + 底線 用於變數和函數名稱：total_price</span><br/><br/><span style="background-color: #ccffcc;">全大寫 用於常數：MAX_SIZE</span><br/><br/><span style="background-color: #ccffcc;">大駝峰式（PascalCase） 用於類別名稱：StudentProfile</span></p>
+<p><span style="background-color: #ffff99;">五、Python 變數名稱區分大小寫</span></p>
+<p style="padding-left: 30px;">length 與 Length 是兩個不同的變數名稱</p>
+<p><span style="background-color: #ffff99;">六、變數可重新指派不同型別（動態型別特性）</span></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">x = 100       # 整數
+x = "hello"   # 變成字串
+</pre>
+<p><span style="background-color: #ffff99;">七、可同時宣告多個變數（多重賦值）</span></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">a, b, c = 1, 2, 3
+x = y = z = 0  # 所有變數都為 0
+</pre>
+<p></p>
+<hr/>
+<p>有關 w3 簡報</p>
 <p><a href="/downloads/1a_w3_about_presentation.txt">1a_w3_about_presentation.txt</a></p>
 <p>先處理<span style="background-color: #ccffcc;">奇數正方形網格區域</span>，讓機器人走過每一格: <a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/295cc3af8240aa9b88f9c3a36b676f71135023fa/for_odd_square_grid_area.py">執行結果</a>。</p>
 <p>針對<span style="background-color: #ccffcc;">長方形網格區域</span>，讓機器人也能走過每一格: <a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/37d7b11d9da66ce781e11372b601fac28f1ee279/for_any_rectangle_grid_area.py">執行結果</a>。</p>
@@ -642,7 +682,8 @@ doc["aitetris"].bind("click", aitetris.do)
 <p><!-- Brython 程式執行的結果, 都以 brython_div1 作為切入位置 --></p>
 <div id="brython_div2"></div>
 <!-- editor2 結束 --><hr/>
-<p></p><h2>Pyodide3</h2>
+<p></p>
+<h2>Pyodide3</h2>
 <p>Pyodide3 則在 <a href="https://mde.tw/cp2025/content/Pyodide.html">Pyodide</a> 與 <a href="https://mde.tw/cp2025/content/Pyodide2.html">Pyodide2</a> 頁面架構下，進一步導入 <a href="https://gist.githubusercontent.com/mdecycu/ec4bb35dd0769e7a83d2a9fa57878a67/raw/9f43571ec070ea3e24b083525ee27275a96efcc8/robot_w_world.py">robot_w_world.py</a>，在既有的水平圍牆 <a href="https://mde.tw/cp2025/reeborg/src/images/north.png">north.png</a> 與垂直圍牆 <a href="https://mde.tw/cp2025/reeborg/src/images/east.png">east.png</a> 檔案之外，加入 <a href="https://mde.tw/cp2025/reeborg/src/images/carrot.png">carrot.png</a>、<a href="https://mde.tw/cp2025/reeborg/src/images/grass.png">grass.png</a> 與 <a href="https://mde.tw/cp2025/reeborg/src/images/pale_grass.png">pale_grass.png</a> 等圖檔。並且擴充可從 URL 讀進 json 格式的 world 變數功能，以便製作出更多元的場景任務，要求機器人執行。</p>
 <p>其中 src URL 變數，可以將網路上的機器人控制程式導入 Pyodide3 頁面外，world URL 變數則可以導入源自 <a href="https://mde.tw/reeborg">Reeborg</a> 機器人程式所設定的 json 格式場景。</p>
 <p>由於 Reeborg 系統中的 png 圖檔均非透明背景，<a href="https://gist.githubusercontent.com/mdecycu/ec4bb35dd0769e7a83d2a9fa57878a67/raw/9f43571ec070ea3e24b083525ee27275a96efcc8/robot_w_world.py">robot_w_world.py</a> 必須利用 HTML 中的 CANVAS，將關鍵的白色背景，以透明的方式顯示。</p>

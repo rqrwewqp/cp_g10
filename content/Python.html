@@ -111,14 +111,14 @@ img.add_border {
             <header class="site-navbar py-4 bg-white" role="banner">
               <div class="container">
                 <div class="row align-items-center">
-                <h1>cp2025_hw </h1>
+                <h1>cp demo</h1>
                 <div class="pl-4">
                     <form>
                     <input type="text" placeholder="Search" name="q" id="tipue_search_input" pattern=".{2,}" title="At least 2 characters" required>
                     </form>
                 </div>
                   <!-- <div class="col-11 col-xl-2">
-                    <h1 class="mb-0 site-logo"><a href="index.html" class="text-black h2 mb-0">cp2025_hw </a></h1> 
+                    <h1 class="mb-0 site-logo"><a href="index.html" class="text-black h2 mb-0">cp demo</a></h1> 
                   </div>
                   -->
                   <div class="col-12 col-md-10 d-none d-xl-block">
@@ -131,7 +131,7 @@ img.add_border {
                             <li><a href="./../blog/index.html">blog</a></li>
                         </ul>
                       </li>
-                     <li><a href='About.html'>About</a><li><a href='w3.html'>w3</a><li class='has-children'><a href='Brython.html'>Brython</a><ul class='dropdown'><li><a href='Pyodide3.html'>Pyodide3</a></li>
+                     <li><a href='About.html'>About</a><li><a href='Python.html'>Python</a><li class='has-children'><a href='Brython.html'>Brython</a><ul class='dropdown'><li><a href='Pyodide3.html'>Pyodide3</a></li>
                       </ul>
                 </nav>
               </div>
@@ -142,7 +142,47 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content">About << <a href='About.html'>Previous</a> <a href='Brython.html'>Next</a> >> Brython<br /><h1>w3</h1>
+    <div id="tipue_search_content">About << <a href='About.html'>Previous</a> <a href='Brython.html'>Next</a> >> Brython<br /><h1>Python</h1>
+<p><a href="https://github.com/mdecycu/python_2025/blob/main/%E7%AC%AC01%E8%AA%B2%EF%BC%9A%E5%88%9D%E8%AD%98Python.md">Python 程式教材</a> (中文)</p>
+<p>透過 <a href="https://mde.tw/cp2025/content/Robot_ex.html">https://mde.tw/cp2025/content/Robot_ex.html</a> 學習 Python 程式語法。</p>
+<p>Python 基本語法: <a href="https://link.springer.com/chapter/10.1007/978-3-031-90522-3_1">Python essential</a> (英文，只能在校網擷取)</p>
+<p>Python 變數宣告原則:</p>
+<p>在 Python 中，變數宣告（Variable Declaration）相較於其他語言（如 Java 或 C++）來得簡單，因為 Python 是動態型別語言。以下是 Python 宣告變數的原則與最佳實踐：</p>
+<p><span style="background-color: #ffff99;">一、不需明確指定型別</span></p>
+<p style="padding-left: 30px;"><span style="background-color: #ccffcc;">Python 是動態型別語言，你不需要指定變數型別</span>，解譯器會根據賦值自動判斷。</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">x = 10        # 整數
+name = "Amy"  # 字串
+pi = 3.14     # 浮點數
+</pre>
+<p><span style="background-color: #ffff99;">二、變數名稱命名規則</span></p>
+<p style="padding-left: 30px;">合法命名：<br/><br/><span style="background-color: #ccffcc;">可以包含字母、數字、底線（_）</span><br/><br/><span style="background-color: #ccffcc;">不能以數字開頭</span><br/><br/><span style="background-color: #ccffcc;">不能使用 Python 保留的關鍵字(35個)</span>:</p>
+<p style="padding-left: 60px;">['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', '<span style="background-color: #ffcc99;">def</span>', 'del', 'elif', '<span style="background-color: #ffcc99;">else</span>', 'except', 'finally', '<span style="background-color: #ffcc99;">for</span>', 'from', 'global', '<span style="background-color: #ffcc99;">if</span>', '<span style="background-color: #ffcc99;">import</span>', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']</p>
+<p style="padding-left: 30px;">利用 keyword 模組，<a href="https://mde.tw/cp_demo/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/da44925c2f9694f825c2525edfc80367f327ca5e/print_keywords.py">列出 Python 所保留的關鍵字</a>:</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import keyword
+
+# 印出關鍵字清單
+print("Python 保留關鍵字有：")
+print(keyword.kwlist)
+
+# 印出總數
+print("\n關鍵字總數：", len(keyword.kwlist))</pre>
+<p><span style="background-color: #ffff99;">三、使用有意義的變數名稱</span></p>
+<p style="padding-left: 30px;">例如: grid_width = 10</p>
+<p><span style="background-color: #ffff99;">四、遵守 Python 命名慣例（<a href="https://peps.python.org/pep-0008/" style="background-color: #ffff99;">PEP 8</a>）</span></p>
+<p style="padding-left: 30px;"><span style="background-color: #ccffcc;">小寫 + 底線 用於變數和函數名稱：total_price</span><br/><br/><span style="background-color: #ccffcc;">全大寫 用於常數：MAX_SIZE</span><br/><br/><span style="background-color: #ccffcc;">大駝峰式（PascalCase） 用於類別名稱：StudentProfile</span></p>
+<p><span style="background-color: #ffff99;">五、Python 變數名稱區分大小寫</span></p>
+<p style="padding-left: 30px;">length 與 Length 是兩個不同的變數名稱</p>
+<p><span style="background-color: #ffff99;">六、變數可重新指派不同型別（動態型別特性）</span></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">x = 100       # 整數
+x = "hello"   # 變成字串
+</pre>
+<p><span style="background-color: #ffff99;">七、可同時宣告多個變數（多重賦值）</span></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">a, b, c = 1, 2, 3
+x = y = z = 0  # 所有變數都為 0
+</pre>
+<p></p>
+<hr/>
+<p>有關 w3 簡報</p>
 <p><a href="./../downloads/1a_w3_about_presentation.txt">1a_w3_about_presentation.txt</a></p>
 <p>先處理<span style="background-color: #ccffcc;">奇數正方形網格區域</span>，讓機器人走過每一格: <a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/295cc3af8240aa9b88f9c3a36b676f71135023fa/for_odd_square_grid_area.py">執行結果</a>。</p>
 <p>針對<span style="background-color: #ccffcc;">長方形網格區域</span>，讓機器人也能走過每一格: <a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/37d7b11d9da66ce781e11372b601fac28f1ee279/for_any_rectangle_grid_area.py">執行結果</a>。</p>
