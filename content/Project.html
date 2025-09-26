@@ -2,6 +2,7 @@
         <head>
         <title>cp_demo</title>
         <meta charset="utf-8">
+<meta property="head" content="H1">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="./../cmsimde/static/chimper/fonts/icomoon/style.css">
         <link rel="stylesheet" href="./../cmsimde/static/chimper/css/bootstrap.min.css">
@@ -141,22 +142,113 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content"> <a href='Project.html'>Next</a> >> Project<br /><h1>About</h1>
-<p>課程名稱: 計算機程式</p>
-<p>示範網站: <a href="https://mde.tw/cp_demo">https://mde.tw/cp_demo</a></p>
-<p>示範倉儲: <a href="https://github.com/mdecycu/cp_demo">https://github.com/mdecycu/cp_demo</a> </p>
-<p>課程評分:</p>
-<p style="padding-left: 30px;"><span style="background-color: #ffff00;">學習心得報告 (60%)</span> - MS Teams 線上參與，<span style="background-color: #ccffcc;">6人一組</span>每三週發表學習心得。</p>
-<p style="padding-left: 60px;">w3、w7、w10、w14、w17、w18</p>
-<p style="padding-left: 60px;">學習心得報告主題:</p>
-<p style="padding-left: 60px;">w3: 什麼是 git, GitHub, gist 與 cmsimde? 如何使用這些工具？為什麼要使用這些工具？ (<a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/71ff1c69dd233e6a5a83dd60997950de/raw/b4134dc3724f9c6aa1de7534a74f298288de0fa5/round_dot_move.py">動態模擬</a>)</p>
-<p style="padding-left: 60px;">w7: Brython 是什麼？如何在瀏覽器配置 Brython 環境？ Brython 能做什麼？ (<a href="https://mde.tw/cp2025/content/Brython.html">Brython</a>, <a href="https://mde.tw/cp2025/content/Robot_ex.html">Examples</a>)</p>
-<p style="padding-left: 60px;">w10: 如何在瀏覽器中模擬機器人作動？ (<a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/58fed8bd2f5be98a6456a8dcae512011/raw/4019adba4ee4be19c35982d835bad8e7d83a7b2f/brython_robot4_ex1.py">機器人作動</a>)</p>
-<p style="padding-left: 60px;">w14: 在瀏覽器中模擬機器人作動的目的是什麼？ (<a href="./../downloads/otto_robot.7z">otto_robot.7z</a>, <a href="https://mde.tw/cad2025/content/Homework.html">Plotter</a>, <a href="./../downloads/open_duck_mini.7z">open_duck_mini.7z</a> ,<a href="https://webots.cloud/AcTNYs0">https://webots.cloud/AcTNYs0</a>)</p>
-<p style="padding-left: 60px;">w17 (<span style="background-color: #ccffcc;">1b 採 Youtube 影片簡報</span>): 計算機程式課程學到了什麼？</p>
-<p style="padding-left: 60px;">w18: 課程總結</p>
-<p style="padding-left: 30px;"><span style="background-color: #ffff00;">個人與分組網站維護 (40%)</span> - 每週至少兩次推送與課程進度相關的學習內容與心得。</p>
-<p style="padding-left: 60px;">w9 期中自評、w18 期末自評</p><br /> <a href='Project.html'>Next</a> >> Project</div>
+    <div id="tipue_search_content">About << <a href='About.html'>Previous</a> <a href='Python.html'>Next</a> >> Python<br /><h1>Project</h1>
+<p>專案簡介：分散式 Reveal.js 簡報編輯系統</p>
+<p>這是一個使用 Flask 所建立的 Web 編輯器，用於多人協作編輯 Reveal.js 簡報內容（以 Markdown 撰寫），並透過 Git 作為儲存與版本控制工具。每位使用者可在本地端啟動編輯介面，修改後使用自己的 GitHub Token 或 SSH 金鑰來 git push 到遠端分支，藉此保留作者身分與提交記錄。</p>
+<p>整個系統的設計理念為：</p>
+<ol>
+<li>本地運行：使用者 clone 後可在本地執行 Flask 網頁伺服器。</li>
+<li>Web 編輯介面：提供簡單的 Markdown 編輯器與 Reveal.js 預覽。</li>
+<li>Git 管理版本：使用者使用自己的 Git 身份（token 或 SSH）將內容推送到遠端分支。</li>
+<li>非同步協作：統一合併簡報內容透過 Pull Request 或 Git 合併流程。</li>
+<li>這套系統不需要後端帳號認證與 Git 操作，而是透過 GitHub 分支和 PR 工作流，達成簡潔、可追蹤、模組化的多人協作。</li>
+</ol>
+<p>專案目錄架構</p>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">slides-editor/
+├── app.py                   # Flask 網頁應用主程式
+├── templates/
+│   └── editor.html          # Markdown 編輯頁面 + Reveal.js 預覽
+├── slides/
+│   └── slides.md            # 使用者實際編輯的簡報 Markdown 檔案
+├── requirements.txt         # Python 相依套件
+└── README.md                # 專案說明
+</pre>
+<p>啟動本地 Flask Web 編輯器<br/><br/>功能描述：使用者在自己的電腦上執行 Flask 應用，開啟 localhost 編輯介面。<br/><br/>app.py</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">from flask import Flask, render_template, request, redirect, url_for
+import os
+
+app = Flask(__name__)
+SLIDES_PATH = os.path.join("slides", "slides.md")
+
+@app.route("/", methods=["GET", "POST"])
+def editor():
+    if request.method == "POST":
+        markdown = request.form["markdown"]
+        with open(SLIDES_PATH, "w", encoding="utf-8") as f:
+            f.write(markdown)
+        return redirect(url_for("editor"))
+
+    with open(SLIDES_PATH, "r", encoding="utf-8") as f:
+        markdown = f.read()
+    return render_template("editor.html", content=markdown)
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
+</pre>
+<p>前端 Reveal.js + Markdown 編輯器<br/><br/>功能描述：提供網頁介面讓使用者編輯 Markdown，並即時預覽 Reveal.js 簡報。<br/><br/>templates/editor.html</p>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;簡報編輯器&lt;/title&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/reveal.js@4/dist/reveal.min.js"&gt;&lt;/script&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"&gt;&lt;/script&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4/dist/reveal.css"&gt;
+  &lt;style&gt;
+    textarea { width: 100%; height: 300px; margin-bottom: 1em; font-family: monospace; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Markdown 編輯器&lt;/h1&gt;
+  &lt;form method="POST"&gt;
+    &lt;textarea name="markdown"&gt;{{ content }}&lt;/textarea&gt;
+    &lt;br&gt;
+    &lt;button type="submit"&gt;儲存&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;hr&gt;
+  &lt;h2&gt;Reveal.js 預覽&lt;/h2&gt;
+  &lt;div class="reveal"&gt;
+    &lt;div class="slides" id="slides"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const markdown = document.querySelector("textarea").value;
+    const slidesDiv = document.getElementById("slides");
+
+    const slides = markdown.split(/^---$/m);
+    const html = slides.map(md =&gt; `&lt;section&gt;${marked.parse(md)}&lt;/section&gt;`).join('');
+    slidesDiv.innerHTML = html;
+
+    Reveal.initialize();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Git 操作由使用者本地負責（非後端）<br/><br/>功能描述：使用者在本地透過 CLI 執行 Git 操作，使用自己的身份進行 commit 與 push。<br/><br/>指令建議（你可印在前端或 README 中）</p>
+<pre class="brush:js;auto-links:false;toolbar:false" contenteditable="false"># 取得最新版本
+git pull origin main
+
+# 建立新的分支
+git checkout -b users/your-name-update
+
+# 加入修改的檔案
+git add slides/slides.md
+
+# 提交變更
+git commit -m "新增第 5 頁投影片"
+
+# 推送到遠端分支（使用者自己的 Git 身份）
+git push origin users/your-name-update
+
+# 接著到 GitHub 建立 Pull Request
+</pre>
+<p>使用者操作指令</p>
+<pre class="brush:js;auto-links:false;toolbar:false" contenteditable="false">git checkout -b users/你的名字-20250926
+git add slides/slides.md
+git commit -m "更新簡報內容"
+git push origin users/你的名字-20250926</pre>
+<p></p><br />About << <a href='About.html'>Previous</a> <a href='Python.html'>Next</a> >> Python</div>
         
     <!-- footer -->
       <div class="container">
