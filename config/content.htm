@@ -393,7 +393,259 @@ x = y = z = 0  # 所有變數都為 0
 <ul>
 <li><strong>開發效率低：</strong> 如果學生沒有使用 CMSIMDE，他們將需要在多個工具和平台之間切換，這會浪費時間並降低效率。</li>
 <li><strong>難以協作：</strong> 沒有 CMSIMDE，學生將難以在一個平台上集中管理開發、測試和版本控制，協作會變得更加複雜。</li>
-</ul><h1>Brython</h1>
+</ul><h1>Examples</h1>
+<script src="/static/brython.js"></script>
+<script src="/static/brython_stdlib.js"></script>
+<!-- 啟動 Brython -->
+<p>
+<script>
+window.onload=function(){
+brython({debug:1, pythonpath:['/static/','./../downloads/py/']});
+}
+</script>
+</p>
+<div id="brython_div1"></div>
+<p>w5: <span>深入理解</span><a href="https://mde.tw/cp2025/content/Brython.html?src=https://gist.githubusercontent.com/mdecycu/fa7d2a68d1569596f62e5b7739a83119/raw/e2502768ea4e0d13b33da0976b656a337e51ad42/cp_w4_robot_animation.py">機器人行走模擬程式</a><span>中的所有 Python 與 Brython 程式用法。</span></p>
+<p>目前頁面已經有一個 div 標註, 其 id 設為 brython_div1, 請多舉幾個 brython browser 模組的 document, html, timer 以及 bind 的範例, 各舉十個範例, 讓我可以交作業.</p>
+<h2>w5_1</h2>
+<div id="brython_div1"></div>
+<!-- 導入 brython 程式庫 -->
+<p>
+<script src="/static/brython.js"></script>
+<script src="/static/brython_stdlib.js"></script>
+</p>
+<!-- 啟動 Brython -->
+<p>
+<script>
+window.onload=function(){
+brython({debug:1, pythonpath:['/static/','./../downloads/py/']});
+}
+</script>
+<script type="text/python3">
+from browser import document, html, timer, bind
+
+# 每個格子的像素大小
+CELL_SIZE = 40
+
+# 牆壁厚度，用於圖片位置調整
+WALL_THICKNESS = 6
+
+# 牆壁與機器人圖片的來源路徑
+IMG_PATH = "https://mde.tw/cp2025/reeborg/src/images/"
+
+# --- 定義世界地圖的類別 ---
+class World:
+    def __init__(self, width, height):
+        self.width = width    # 地圖寬度（格子數）
+        self.height = height  # 地圖高度（格子數）
+        self.layers = self._create_layers()  # 建立多層 canvas 物件（背景、牆、物體、機器人）
+        self._init_html()      # 初始化 HTML 容器
+        self._draw_grid()      # 畫出網格線
+        self._draw_walls()     # 畫出邊界牆壁
+
+    def _create_layers(self):
+        # 建立四個繪圖層，用於不同物件
+        return {
+            "grid": html.CANVAS(width=self.width * CELL_SIZE, height=self.height * CELL_SIZE),
+            "walls": html.CANVAS(width=self.width * CELL_SIZE, height=self.height * CELL_SIZE),
+            "objects": html.CANVAS(width=self.width * CELL_SIZE, height=self.height * CELL_SIZE),
+            "robots": html.CANVAS(width=self.width * CELL_SIZE, height=self.height * CELL_SIZE),
+        }
+
+    def _init_html(self):
+        # 建立容器 DIV，將四層 Canvas 疊起來
+        container = html.DIV(style={
+            "position": "relative",
+            "width": f"{self.width * CELL_SIZE}px",
+            "height": f"{self.height * CELL_SIZE}px"
+        })
+
+        for z, canvas in enumerate(self.layers.values()):
+            canvas.style = {
+                "position": "absolute",
+                "top": "0px",
+                "left": "0px",
+                "zIndex": str(z)
+            }
+            container <= canvas
+
+        # 手機用控制按鈕 UI
+        button_container = html.DIV(style={"margin-top": "10px", "text-align": "center"})
+        move_button = html.BUTTON("Move Forward (j)", id="move_button")
+        turn_button = html.BUTTON("Turn Left (i)", id="turn_button")
+        button_container <= move_button
+        button_container <= turn_button
+
+        # 插入到 HTML 指定位置
+        document["brython_div1"].clear()
+        document["brython_div1"] <= container
+        document["brython_div1"] <= button_container
+
+    def _draw_grid(self):
+        # 畫格線
+        ctx = self.layers["grid"].getContext("2d")
+        ctx.strokeStyle = "#cccccc"
+        for i in range(self.width + 1):
+            ctx.beginPath()
+            ctx.moveTo(i * CELL_SIZE, 0)
+            ctx.lineTo(i * CELL_SIZE, self.height * CELL_SIZE)
+            ctx.stroke()
+        for j in range(self.height + 1):
+            ctx.beginPath()
+            ctx.moveTo(0, j * CELL_SIZE)
+            ctx.lineTo(self.width * CELL_SIZE, j * CELL_SIZE)
+            ctx.stroke()
+
+    def _draw_image(self, ctx, src, x, y, w, h, offset_x=0, offset_y=0):
+        # 載入圖片並繪製（用於牆壁、機器人）
+        img = html.IMG()
+        img.src = src
+        def onload(evt):
+            px = x * CELL_SIZE + offset_x
+            py = (self.height - 1 - y) * CELL_SIZE + offset_y  # Y軸向上翻轉
+            ctx.drawImage(img, px, py, w, h)
+        img.bind("load", onload)
+
+    def _draw_walls(self):
+        # 畫四邊的牆壁
+        ctx = self.layers["walls"].getContext("2d")
+        for x in range(self.width):
+            self._draw_image(ctx, IMG_PATH + "north.png", x, self.height - 1, CELL_SIZE, WALL_THICKNESS)
+            self._draw_image(ctx, IMG_PATH + "north.png", x, 0, CELL_SIZE, WALL_THICKNESS, offset_y=CELL_SIZE - WALL_THICKNESS)
+        for y in range(self.height):
+            self._draw_image(ctx, IMG_PATH + "east.png", 0, y, WALL_THICKNESS, CELL_SIZE)
+            self._draw_image(ctx, IMG_PATH + "east.png", self.width - 1, y, WALL_THICKNESS, CELL_SIZE, offset_x=CELL_SIZE - WALL_THICKNESS)
+
+    def robot(self, x, y):
+        # 畫出靜態機器人（初始位置）
+        ctx = self.layers["robots"].getContext("2d")
+        self._draw_image(ctx, IMG_PATH + "blue_robot_e.png", x - 1, y - 1, CELL_SIZE, CELL_SIZE)
+
+# --- 定義動畫機器人類別 ---
+class AnimatedRobot:
+    def __init__(self, world, x, y):
+        self.world = world
+        self.x = x - 1
+        self.y = y - 1
+        self.facing = "E"  # 初始朝向
+        self.facing_order = ["E", "N", "W", "S"]
+        self.robot_ctx = world.layers["robots"].getContext("2d")
+        self.trace_ctx = world.layers["objects"].getContext("2d")
+        self.queue = []  # 動作佇列
+        self.running = False
+        self._draw_robot()
+
+    def _robot_image(self):
+        return {
+            "E": "blue_robot_e.png",
+            "N": "blue_robot_n.png",
+            "W": "blue_robot_w.png",
+            "S": "blue_robot_s.png"
+        }[self.facing]
+
+    def _draw_robot(self):
+        self.robot_ctx.clearRect(0, 0, self.world.width * CELL_SIZE, self.world.height * CELL_SIZE)
+        self.world._draw_image(self.robot_ctx, IMG_PATH + self._robot_image(), self.x, self.y, CELL_SIZE, CELL_SIZE)
+
+    def _draw_trace(self, from_x, from_y, to_x, to_y):
+        # 繪製路徑線條
+        ctx = self.trace_ctx
+        ctx.strokeStyle = "#d33"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        fx = from_x * CELL_SIZE + CELL_SIZE / 2
+        fy = (self.world.height - 1 - from_y) * CELL_SIZE + CELL_SIZE / 2
+        tx = to_x * CELL_SIZE + CELL_SIZE / 2
+        ty = (self.world.height - 1 - to_y) * CELL_SIZE + CELL_SIZE / 2
+        ctx.moveTo(fx, fy)
+        ctx.lineTo(tx, ty)
+        ctx.stroke()
+
+    def move(self, steps):
+        def action(next_done):
+            def step():
+                nonlocal steps
+                if steps == 0:
+                    next_done()
+                    return
+                from_x, from_y = self.x, self.y
+                dx, dy = 0, 0
+                if self.facing == "E":
+                    dx = 1
+                elif self.facing == "W":
+                    dx = -1
+                elif self.facing == "N":
+                    dy = 1
+                elif self.facing == "S":
+                    dy = -1
+                next_x = self.x + dx
+                next_y = self.y + dy
+
+                if 0 <= next_x < self.world.width and 0 <= next_y < self.world.height:
+                    self.x, self.y = next_x, next_y
+                    self._draw_trace(from_x, from_y, self.x, self.y)
+                    self._draw_robot()
+                    steps -= 1
+                    timer.set_timeout(step, 200)
+                else:
+                    print("已經撞牆，停止移動！")
+                    next_done()
+            step()
+        self.queue.append(action)
+        self._run_queue()
+
+    def turn_left(self):
+        def action(done):
+            idx = self.facing_order.index(self.facing)
+            self.facing = self.facing_order[(idx + 1) % 4]
+            self._draw_robot()
+            timer.set_timeout(done, 300)
+        self.queue.append(action)
+        self._run_queue()
+
+    def _run_queue(self):
+        if self.running or not self.queue:
+            return
+        self.running = True
+        action = self.queue.pop(0)
+        action(lambda: self._done())
+
+    def _done(self):
+        self.running = False
+        self._run_queue()
+
+# --- 主程式：建立地圖與機器人 ---
+w = World(10, 10)
+w.robot(1, 1)
+r = AnimatedRobot(w, 1, 1)
+
+# 綁定鍵盤控制
+@bind(document, "keydown")
+def keydown(evt):
+    if evt.key == "j":
+        r.move(1)
+    elif evt.key == "i":
+        r.turn_left()
+
+# 綁定按鈕控制
+@bind(document["move_button"], "click")
+def move_click(evt):
+    r.move(1)
+
+@bind(document["turn_button"], "click")
+def turn_click(evt):
+    r.turn_left()
+
+# 初始自動巡邏路線（可移除）
+r.move(9)
+r.turn_left()
+r.move(9)
+r.turn_left()
+r.move(9)
+r.turn_left()
+r.move(9)
+</script>
+</p><h1>Brython</h1>
 <p><a href="https://brython.info/">Brython</a> 是一個將 <a href="https://en.wikipedia.org/wiki/Python_(programming_language)">Python</a> 語法編譯為 <a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript">JavaScript</a> 的工具，能直接在瀏覽器中以 <a href="https://en.wikipedia.org/wiki/Python_(programming_language)">Python</a> 撰寫前端網頁程式。</p>
 <p><button id="add1to100">1 add to 100</button><button id="robot1">機器人巡邏</button><button id="free_walk">自由行</button></p>
 <!-- 導入 brython 程式庫 -->
@@ -688,8 +940,7 @@ doc["aitetris"].bind("click", aitetris.do)
 <p><!-- Brython 程式執行的結果, 都以 brython_div1 作為切入位置 --></p>
 <div id="brython_div2"></div>
 <!-- editor2 結束 --><hr/>
-<p></p>
-<h2>Pyodide3</h2>
+<p></p><h2>Pyodide3</h2>
 <p>Pyodide3 則在 <a href="https://mde.tw/cp2025/content/Pyodide.html">Pyodide</a> 與 <a href="https://mde.tw/cp2025/content/Pyodide2.html">Pyodide2</a> 頁面架構下，進一步導入 <a href="https://gist.githubusercontent.com/mdecycu/ec4bb35dd0769e7a83d2a9fa57878a67/raw/9f43571ec070ea3e24b083525ee27275a96efcc8/robot_w_world.py">robot_w_world.py</a>，在既有的水平圍牆 <a href="https://mde.tw/cp2025/reeborg/src/images/north.png">north.png</a> 與垂直圍牆 <a href="https://mde.tw/cp2025/reeborg/src/images/east.png">east.png</a> 檔案之外，加入 <a href="https://mde.tw/cp2025/reeborg/src/images/carrot.png">carrot.png</a>、<a href="https://mde.tw/cp2025/reeborg/src/images/grass.png">grass.png</a> 與 <a href="https://mde.tw/cp2025/reeborg/src/images/pale_grass.png">pale_grass.png</a> 等圖檔。並且擴充可從 URL 讀進 json 格式的 world 變數功能，以便製作出更多元的場景任務，要求機器人執行。</p>
 <p>其中 src URL 變數，可以將網路上的機器人控制程式導入 Pyodide3 頁面外，world URL 變數則可以導入源自 <a href="https://mde.tw/reeborg">Reeborg</a> 機器人程式所設定的 json 格式場景。</p>
 <p>由於 Reeborg 系統中的 png 圖檔均非透明背景，<a href="https://gist.githubusercontent.com/mdecycu/ec4bb35dd0769e7a83d2a9fa57878a67/raw/9f43571ec070ea3e24b083525ee27275a96efcc8/robot_w_world.py">robot_w_world.py</a> 必須利用 HTML 中的 CANVAS，將關鍵的白色背景，以透明的方式顯示。</p>
